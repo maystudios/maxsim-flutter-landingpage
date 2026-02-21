@@ -1,5 +1,3 @@
-"use client";
-
 import { motion } from "motion/react";
 import { Layers, Blocks, Bot, Terminal, GitBranch, ShieldCheck } from "lucide-react";
 

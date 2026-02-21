@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Copy, Check, Terminal, Layers, Settings, Bot, Package } from "lucide-react";
