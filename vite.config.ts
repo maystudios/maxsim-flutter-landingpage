@@ -17,7 +17,7 @@ export default defineConfig(async () => {
   const maxsimVersion = await fetchNpmVersion("maxsim-flutter");
 
   return {
-    base: "/maxsim-flutter-landingpage/",
+    base: "/",
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
