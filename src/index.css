@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* Fallback for browsers without CSS @layer support (Chrome <99, Safari <15.4) */
+:root {
+  --color-background: #09090b;
+  --color-foreground: #fafafa;
+  --color-muted: #a1a1aa;
+  --color-border: #27272a;
+  --color-accent: #3b82f6;
+  --color-surface: #18181b;
+}
+
 @theme inline {
   --color-background: #09090b;
   --color-foreground: #fafafa;
