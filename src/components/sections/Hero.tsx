@@ -293,7 +293,7 @@ export default function Hero() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1.4 }}
               >
-                v1.0.0
+                v{__MAXSIM_VERSION__}
               </motion.span>
             </motion.div>
           </div>
