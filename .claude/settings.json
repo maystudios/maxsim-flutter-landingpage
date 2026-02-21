@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /mnt/c/Development/maxsim-landigpage && npm run build && npx playwright test"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /mnt/c/Development/maxsim-landigpage && if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'git push'; then npm run build && npx playwright test; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
