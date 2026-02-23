@@ -3,19 +3,45 @@ import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "Features", href: "#features" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Docs", href: "#docs" },
+  { label: "Features", href: "#features", section: "features" },
+  { label: "How It Works", href: "#how-it-works", section: "how-it-works" },
+  { label: "Docs", href: "#docs", section: "docs" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Track which section is currently visible
+  useEffect(() => {
+    const sectionIds = navLinks.map((l) => l.section);
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length === 0) return;
+        const top = visible.reduce((a, b) =>
+          a.intersectionRatio > b.intersectionRatio ? a : b
+        );
+        setActiveSection(top.target.id);
+      },
+      { threshold: [0.2, 0.5], rootMargin: "-64px 0px -30% 0px" }
+    );
+
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -36,15 +62,27 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm text-muted hover:text-foreground transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const active = activeSection === link.section;
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`relative text-sm pb-1 transition-colors duration-200 ${
+                  active ? "text-foreground" : "text-muted hover:text-foreground"
+                }`}
+              >
+                {link.label}
+                {active && (
+                  <motion.span
+                    layoutId="nav-active-dot"
+                    className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 block w-1 h-1 rounded-full bg-accent"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </a>
+            );
+          })}
           <a
             href="https://github.com/maystudios/maxsim-flutter"
             target="_blank"
@@ -80,7 +118,11 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
+                  className={`text-sm transition-colors ${
+                    activeSection === link.section
+                      ? "text-foreground"
+                      : "text-muted hover:text-foreground"
+                  }`}
                 >
                   {link.label}
                 </a>
