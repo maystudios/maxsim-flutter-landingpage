@@ -7,28 +7,20 @@ const FLIP_WORDS = ["Scaffolding", "Architecture", "Development", "Tooling"];
 function AnimatedGridBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
-      {/* Vertical lines */}
-      {Array.from({ length: 12 }).map((_, i) => (
-        <motion.div
-          key={`v-${i}`}
-          className="absolute top-0 bottom-0 w-px bg-border/40"
-          style={{ left: `${(i + 1) * (100 / 13)}%` }}
-          initial={{ scaleY: 0, opacity: 0 }}
-          animate={{ scaleY: 1, opacity: 1 }}
-          transition={{ duration: 1.2, delay: i * 0.06, ease: "easeOut" }}
-        />
-      ))}
-      {/* Horizontal lines */}
-      {Array.from({ length: 8 }).map((_, i) => (
-        <motion.div
-          key={`h-${i}`}
-          className="absolute left-0 right-0 h-px bg-border/30"
-          style={{ top: `${(i + 1) * (100 / 9)}%` }}
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ duration: 1.4, delay: 0.2 + i * 0.07, ease: "easeOut" }}
-        />
-      ))}
+      {/* Fixed 72×72 px square grid — consistent on all viewports */}
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(39,39,42,0.5) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(39,39,42,0.4) 1px, transparent 1px)
+          `,
+          backgroundSize: "72px 72px",
+        }}
+      />
       {/* Subtle radial gradient vignette */}
       <div
         className="absolute inset-0"
