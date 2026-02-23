@@ -68,7 +68,14 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className={`relative text-sm pb-1 transition-colors duration-200 ${
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveSection(link.section);
+                  document
+                    .getElementById(link.section)
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className={`relative text-sm pb-1 transition-colors duration-200 cursor-pointer ${
                   active ? "text-foreground" : "text-muted hover:text-foreground"
                 }`}
               >
@@ -117,8 +124,15 @@ export default function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`text-sm transition-colors ${
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMobileOpen(false);
+                    setActiveSection(link.section);
+                    document
+                      .getElementById(link.section)
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className={`text-sm transition-colors cursor-pointer ${
                     activeSection === link.section
                       ? "text-foreground"
                       : "text-muted hover:text-foreground"
