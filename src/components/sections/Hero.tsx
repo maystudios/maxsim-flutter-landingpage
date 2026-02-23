@@ -29,21 +29,6 @@ function AnimatedGridBackground() {
           transition={{ duration: 1.4, delay: 0.2 + i * 0.07, ease: "easeOut" }}
         />
       ))}
-      {/* Accent dot at intersection */}
-      <motion.div
-        className="absolute w-1.5 h-1.5 rounded-full bg-accent"
-        style={{ left: "calc(100% / 13 * 3)", top: "calc(100% / 9 * 3)" }}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: [0, 1.4, 1], opacity: [0, 1, 0.7] }}
-        transition={{ duration: 0.8, delay: 1.2 }}
-      />
-      <motion.div
-        className="absolute w-1 h-1 rounded-full bg-accent-light/60"
-        style={{ left: "calc(100% / 13 * 9)", top: "calc(100% / 9 * 6)" }}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: [0, 1.4, 1], opacity: [0, 1, 0.5] }}
-        transition={{ duration: 0.8, delay: 1.5 }}
-      />
       {/* Subtle radial gradient vignette */}
       <div
         className="absolute inset-0"
