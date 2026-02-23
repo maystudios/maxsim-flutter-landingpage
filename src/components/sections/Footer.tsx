@@ -147,7 +147,7 @@ export function Footer() {
       <DotGrid />
 
       {/* Top gradient separator */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
       {/* Ambient blue glow from bottom-center */}
       <div
