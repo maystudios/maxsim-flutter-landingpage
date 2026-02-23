@@ -8,6 +8,26 @@ const navLinks = [
   { label: "Docs", href: "#docs", section: "docs" },
 ];
 
+const easeInOutCubic = (t: number) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+function smoothScrollTo(targetId: string, duration = 700) {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const headerOffset = 64;
+  const top = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+  const start = window.scrollY;
+  const distance = top - start;
+  if (Math.abs(distance) < 2) return;
+  const startTime = performance.now();
+  const step = (now: number) => {
+    const progress = Math.min((now - startTime) / duration, 1);
+    window.scrollTo(0, start + distance * easeInOutCubic(progress));
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -71,9 +91,7 @@ export default function Navbar() {
                 onClick={(e) => {
                   e.preventDefault();
                   setActiveSection(link.section);
-                  document
-                    .getElementById(link.section)
-                    ?.scrollIntoView({ behavior: "smooth" });
+                  smoothScrollTo(link.section);
                 }}
                 className={`relative text-sm pb-1 transition-colors duration-200 cursor-pointer ${
                   active ? "text-foreground" : "text-muted hover:text-foreground"
@@ -128,9 +146,7 @@ export default function Navbar() {
                     e.preventDefault();
                     setMobileOpen(false);
                     setActiveSection(link.section);
-                    document
-                      .getElementById(link.section)
-                      ?.scrollIntoView({ behavior: "smooth" });
+                    smoothScrollTo(link.section);
                   }}
                   className={`text-sm transition-colors cursor-pointer ${
                     activeSection === link.section

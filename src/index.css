@@ -23,9 +23,6 @@
   --font-mono: "Geist Mono", ui-monospace, monospace;
 }
 
-* {
-  scroll-behavior: smooth;
-}
 
 body {
   margin: 0;
