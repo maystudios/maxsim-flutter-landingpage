@@ -1,10 +1,5 @@
 import { Github, Package, ArrowUp } from "lucide-react";
-import {
-  motion,
-  useAnimationFrame,
-  useMotionValue,
-  useTransform,
-} from "motion/react";
+import { motion, useAnimationFrame, useMotionValue, useTransform } from "motion/react";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 
@@ -99,25 +94,6 @@ function FooterLink({
   );
 }
 
-/* ─── Dot grid background ───────────────────────────────────── */
-function DotGrid() {
-  return (
-    <div
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        backgroundImage:
-          "radial-gradient(circle, var(--color-border) 1px, transparent 1px)",
-        backgroundSize: "28px 28px",
-        opacity: 0.35,
-        maskImage:
-          "radial-gradient(ellipse 100% 90% at 50% 100%, black 30%, transparent 100%)",
-        WebkitMaskImage:
-          "radial-gradient(ellipse 100% 90% at 50% 100%, black 30%, transparent 100%)",
-      }}
-    />
-  );
-}
-
 /* ─── Data ──────────────────────────────────────────────────── */
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
@@ -143,54 +119,27 @@ export function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <footer className="relative bg-background overflow-hidden">
-      <DotGrid />
-
-      {/* Top gradient separator */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-
-      {/* Ambient blue glow from bottom-center */}
-      <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[220px] pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at center bottom, rgba(59,130,246,0.10) 0%, transparent 70%)",
-        }}
-      />
-
-      <div className="relative max-w-6xl mx-auto px-6 pt-16 pb-8">
+    <footer className="bg-background border-t border-border">
+      <div className="max-w-6xl mx-auto px-6 pt-14 pb-8">
 
         {/* Main 3-column grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-14">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
 
           {/* Brand column */}
-          <div className="md:col-span-1 flex flex-col gap-5">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="text-2xl font-extrabold tracking-tight text-foreground">
-                maxsim
-                <span className="text-accent">-flutter</span>
-              </span>
-            </motion.div>
+          <div className="md:col-span-1 flex flex-col gap-4">
+            <span className="font-mono font-bold tracking-tight text-foreground">
+              maxsim-flutter
+            </span>
 
             <p className="text-sm text-muted leading-relaxed max-w-xs">
               AI-powered Flutter scaffolding — from a single command to a
               production-ready Clean Architecture app.
             </p>
 
-            {/* Version badge */}
             <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1 text-xs font-mono text-muted">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent inline-block animate-pulse" />
-                v{__MAXSIM_VERSION__}
-              </span>
-              <span className="text-xs font-mono text-muted/50 uppercase tracking-widest">
-                MIT
-              </span>
+              <span className="text-xs font-mono text-muted">v{__MAXSIM_VERSION__}</span>
+              <span className="h-3 w-px bg-border" />
+              <span className="text-xs font-mono text-muted uppercase tracking-widest">MIT</span>
             </div>
           </div>
 
