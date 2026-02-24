@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
+  { label: "Home", href: "#home", section: "home" },
   { label: "Features", href: "#features", section: "features" },
   { label: "How It Works", href: "#how-it-works", section: "how-it-works" },
   { label: "Docs", href: "#docs", section: "docs" },
@@ -11,19 +12,31 @@ const navLinks = [
 const easeInOutCubic = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-function smoothScrollTo(targetId: string, duration = 700) {
-  const el = document.getElementById(targetId);
-  if (!el) return;
-  const headerOffset = 64;
-  const top = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+function smoothScrollTo(sectionId: string, duration = 700, onDone?: () => void) {
+  const target =
+    sectionId === "home"
+      ? 0
+      : (() => {
+          const el = document.getElementById(sectionId);
+          if (!el) return null;
+          return el.getBoundingClientRect().top + window.pageYOffset - 64;
+        })();
+
+  if (target === null) return;
+
   const start = window.scrollY;
-  const distance = top - start;
-  if (Math.abs(distance) < 2) return;
+  const distance = target - start;
+  if (Math.abs(distance) < 2) {
+    onDone?.();
+    return;
+  }
+
   const startTime = performance.now();
   const step = (now: number) => {
     const progress = Math.min((now - startTime) / duration, 1);
     window.scrollTo(0, start + distance * easeInOutCubic(progress));
     if (progress < 1) requestAnimationFrame(step);
+    else onDone?.();
   };
   requestAnimationFrame(step);
 }
@@ -31,7 +44,8 @@ function smoothScrollTo(targetId: string, duration = 700) {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<string>("home");
+  const isScrollingRef = useRef(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -39,7 +53,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Track which section is currently visible
+  // Track visible section — ignored during programmatic scroll
   useEffect(() => {
     const sectionIds = navLinks.map((l) => l.section);
     const sections = sectionIds
@@ -50,6 +64,7 @@ export default function Navbar() {
 
     const observer = new IntersectionObserver(
       (entries) => {
+        if (isScrollingRef.current) return;
         const visible = entries.filter((e) => e.isIntersecting);
         if (visible.length === 0) return;
         const top = visible.reduce((a, b) =>
@@ -64,6 +79,20 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  const handleNavClick = (
+    e: React.MouseEvent,
+    section: string,
+    closeMobile = false
+  ) => {
+    e.preventDefault();
+    if (closeMobile) setMobileOpen(false);
+    setActiveSection(section);
+    isScrollingRef.current = true;
+    smoothScrollTo(section, 700, () => {
+      isScrollingRef.current = false;
+    });
+  };
+
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -76,7 +105,11 @@ export default function Navbar() {
       }`}
     >
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" className="text-lg font-bold tracking-tight text-foreground">
+        <a
+          href="#home"
+          onClick={(e) => handleNavClick(e, "home")}
+          className="text-lg font-bold tracking-tight text-foreground"
+        >
           maxsim-flutter
         </a>
 
@@ -88,11 +121,7 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActiveSection(link.section);
-                  smoothScrollTo(link.section);
-                }}
+                onClick={(e) => handleNavClick(e, link.section)}
                 className={`relative text-sm pb-1 transition-colors duration-200 cursor-pointer ${
                   active ? "text-foreground" : "text-muted hover:text-foreground"
                 }`}
@@ -142,12 +171,7 @@ export default function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setMobileOpen(false);
-                    setActiveSection(link.section);
-                    smoothScrollTo(link.section);
-                  }}
+                  onClick={(e) => handleNavClick(e, link.section, true)}
                   className={`text-sm transition-colors cursor-pointer ${
                     activeSection === link.section
                       ? "text-foreground"

@@ -18,7 +18,7 @@ function AnimatedGridBackground() {
             linear-gradient(to right, rgba(39,39,42,0.5) 1px, transparent 1px),
             linear-gradient(to bottom, rgba(39,39,42,0.4) 1px, transparent 1px)
           `,
-          backgroundSize: "72px 72px",
+          backgroundSize: "100px 100px",
         }}
       />
       {/* Subtle radial gradient vignette */}
@@ -110,7 +110,7 @@ function TerminalBlock() {
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center bg-background overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center bg-background overflow-hidden">
       <AnimatedGridBackground />
 
       {/* Top accent rule */}
