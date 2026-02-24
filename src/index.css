@@ -50,3 +50,21 @@ body {
   background: var(--color-border);
   border-radius: 3px;
 }
+
+/* Marquee animations */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+.marquee        { animation: marquee         20s linear infinite; }
+.marquee-reverse { animation: marquee-reverse 25s linear infinite; }
+
+@media (max-width: 640px) {
+  .marquee         { animation-duration: 12s; }
+  .marquee-reverse { animation-duration: 15s; }
+}

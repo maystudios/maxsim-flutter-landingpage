@@ -1,29 +1,27 @@
-import { motion } from "motion/react";
-
 const flutterStack = [
-  { name: "Flutter", color: "text-blue-400" },
-  { name: "Riverpod", color: "text-accent-light" },
-  { name: "go_router", color: "text-blue-300" },
-  { name: "freezed", color: "text-blue-400" },
-  { name: "Clean Architecture", color: "text-accent" },
-  { name: "Material 3", color: "text-blue-300" },
+  { name: "Flutter" },
+  { name: "Riverpod" },
+  { name: "go_router" },
+  { name: "freezed" },
+  { name: "Clean Architecture" },
+  { name: "Material 3" },
 ];
 
 const cliStack = [
-  { name: "TypeScript", color: "text-blue-400" },
-  { name: "Commander.js", color: "text-accent-light" },
-  { name: "Handlebars", color: "text-orange-400" },
-  { name: "Zod", color: "text-blue-300" },
+  { name: "TypeScript" },
+  { name: "Commander.js" },
+  { name: "Handlebars" },
+  { name: "Zod" },
 ];
 
-// Duplicate for seamless loop
 const allItems = [...flutterStack, ...cliStack];
+// Duplicate for seamless CSS loop
 const marqueeItems = [...allItems, ...allItems];
 
-function Badge({ name, color }: { name: string; color: string }) {
+function Badge({ name }: { name: string }) {
   return (
     <div className="shrink-0 inline-flex items-center gap-2 px-4 py-2 border border-border bg-surface rounded-sm mx-3">
-      <span className={`w-1.5 h-1.5 rounded-full bg-current ${color}`} />
+      <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
       <span className="font-mono text-sm text-foreground/80 whitespace-nowrap">{name}</span>
     </div>
   );
@@ -60,46 +58,26 @@ export function TechStack() {
         </div>
       </div>
 
-      {/* Marquee row */}
+      {/* Row 1 — left */}
       <div className="relative">
-        {/* Left fade */}
         <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none" />
-        {/* Right fade */}
         <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none" />
-
-        <motion.div
-          className="flex"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{
-            duration: 28,
-            ease: "linear",
-            repeat: Infinity,
-          }}
-        >
+        <div className="marquee flex will-change-transform">
           {marqueeItems.map((item, i) => (
-            <Badge key={`${item.name}-${i}`} name={item.name} color={item.color} />
+            <Badge key={`${item.name}-${i}`} name={item.name} />
           ))}
-        </motion.div>
+        </div>
       </div>
 
-      {/* Second row — reverse */}
+      {/* Row 2 — right */}
       <div className="relative mt-4">
         <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none" />
-
-        <motion.div
-          className="flex"
-          animate={{ x: ["-50%", "0%"] }}
-          transition={{
-            duration: 32,
-            ease: "linear",
-            repeat: Infinity,
-          }}
-        >
+        <div className="marquee-reverse flex will-change-transform">
           {[...marqueeItems].reverse().map((item, i) => (
-            <Badge key={`rev-${item.name}-${i}`} name={item.name} color={item.color} />
+            <Badge key={`rev-${item.name}-${i}`} name={item.name} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
